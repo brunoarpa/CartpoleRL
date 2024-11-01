@@ -1,11 +1,25 @@
 import math
 import random
-import gymnasium
-import torch
+import gymnasium as gym
+from collections import namedtuple, deque
+from itertools import count
 import time
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+import matplotlib
+import matplotlib.pyplot as plt
 
 # Make the cartpole environment from gymnasium  :)))
-env = gymnasium.make("CartPole-v1")
+env = gym.make("CartPole-v1")
+
+# Set up matplotlib (graph for plotting in graph of episode, duration, results)
+is_ipython = 'inline' in matplotlib.get_backend() 
+if is_ipython:
+    from IPython import display
+plt.ion()
+
 # Use GPU for better processing
 device = torch.device(
     "mps" if torch.backends.mps.is_available() else # Apple 
@@ -13,7 +27,7 @@ device = torch.device(
     "cpu"
 )
 
-# Create Neural Network
+# Create Neural Network :o
 class DQN(nn.Module):
 
     def __init__(self, n_observations, n_actions): 
