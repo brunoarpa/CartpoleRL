@@ -191,3 +191,31 @@ plot_durations(show_result=True)
 plt.ioff()
 plt.show()
 env.close()
+
+finish_program = "Continue"
+# Show
+env = gym.make("CartPole-v1", render_mode="human") 
+while finish_program == "Continue":
+    state, info = env.reset() # Initialize the environment and get its state
+    state = torch.tensor(state, dtype=torch.float32, device=device).unsqueeze(0) # Turn state into tensor
+    for t in count():
+        action = select_action(state) 
+        observation, reward, terminated, truncated, _ = env.step(action.item()) # Execute action
+        reward = torch.tensor([reward], device=device) # Turn reward into tensor
+        done = terminated or truncated
+        time.sleep(0.01)
+        env.render()
+
+        if terminated: # e.g <12 degrees
+            next_state = None # Final state
+        else:
+            next_state = torch.tensor(observation, dtype=torch.float32, device=device).unsqueeze(0) # Not final state
+
+        state = next_state # Move to the next state
+
+        if done:
+            episode_durations.append(t + 1)
+            break
+    finish_program = input("Enter Continue to continue program: ")
+
+env.close()
