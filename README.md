@@ -1,5 +1,5 @@
 # CartpoleRL
-DQN for Cartpole Using OpenAI Gymnasium and PyTorch with clear explanations 
+DQN for Cartpole Using OpenAI Gymnasium and PyTorch with clear explanations as comments
 
 # Instructions
 
